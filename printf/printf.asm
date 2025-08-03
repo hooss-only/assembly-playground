@@ -51,6 +51,8 @@ printf_fmt_switch:
   cmp byte [rsi], 'c'
   je printf_fmt_char
 
+  jmp printf_fmt_unknown
+
 printf_fmt_char:
   mov r8, rsi
   lea rsi, [r11]
@@ -72,6 +74,17 @@ printf_fmt_too_much:
 
   mov rax, 60
   mov rdi, 1
+  syscall
+
+printf_fmt_unknown:
+  mov rax, 1
+  mov rdi, 1
+  mov rsi, fmt_type_err_msg
+  mov rdx, 14
+  syscall
+
+  mov rax, 60
+  mov rdi, 2
   syscall
 
 printf_done:

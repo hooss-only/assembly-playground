@@ -1,5 +1,5 @@
 section .data
-  msg db "test", 10, 0
+  msg db "test %c", 10, 0
 
 section .text
   global _start

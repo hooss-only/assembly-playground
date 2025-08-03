@@ -4,27 +4,34 @@ section .text
 ; dword [rbp - 4]: fmt cnt
 ; qword [rbp - 12]: fmt pointer
 printf:
-  sub rsp, 12
+  push rbp
+  mov rbp, rsp
+  sub rsp, 16
   mov dword [rbp-4], 0
   mov qword [rbp-12], rdi
 
   mov rsi, qword [rbp-12]
 
 printf_fmt_cnt_loop:
-  cmp rsi, '%'
+  cmp byte [rsi], '%'
   je printf_fmt_cnt_up
 
-  cmp rsi, '0'
+  cmp byte [rsi], 0
   je printf_start
 
   add rsi, 1
+  jmp printf_fmt_cnt_loop
 
 printf_fmt_cnt_up:
   add qword [rbp-4], 1
   add rsi, 1
-  jmp printf_cnt_loop
+  jmp printf_fmt_cnt_loop
 
 printf_start:
+  mov rax, 60
+  mov rdi, qword [rbp-4]
+  syscall
+
   mov rsi, qword [rbp-12] ; write syscall 준비과정
   mov rax, 1
   mov rdi, 1
@@ -50,9 +57,6 @@ printf_fmt:
   je printf_fmt_char
 
 printf_fmt_char:
-  mov rax, 60
-  mov rdi, 1
-  syscall
 
 printf_fmt_done:
   add rsi, 1
@@ -60,6 +64,8 @@ printf_fmt_done:
 
 printf_done:
   mov rax, 0
+  mov rsp, rbp
+  pop rbp
   ret
 
 section .data:

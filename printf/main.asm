@@ -1,5 +1,5 @@
 section .data
-  msg db "test %c", 10, 0
+  msg db "test %c %c", 10, 0
 
 section .text
   global _start
@@ -8,6 +8,7 @@ section .text
 _start:
   mov rdi, msg
   mov rsi, 'h'
+  mov rdx, 'i'
   call printf
   
   mov rax, 60

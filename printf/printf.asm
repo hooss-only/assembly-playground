@@ -1,8 +1,31 @@
 section .text
   global printf
 
+; dword [rbp - 4]: fmt cnt
+; qword [rbp - 12]: fmt pointer
 printf:
-  mov rsi, rdi ; write syscall 준비과정
+  sub rsp, 12
+  mov dword [rbp-4], 0
+  mov qword [rbp-12], rdi
+
+  mov rsi, qword [rbp-12]
+
+printf_fmt_cnt_loop:
+  cmp rsi, '%'
+  je printf_fmt_cnt_up
+
+  cmp rsi, '0'
+  je printf_start
+
+  add rsi, 1
+
+printf_fmt_cnt_up:
+  add qword [rbp-4], 1
+  add rsi, 1
+  jmp printf_cnt_loop
+
+printf_start:
+  mov rsi, qword [rbp-12] ; write syscall 준비과정
   mov rax, 1
   mov rdi, 1
   mov rdx, 1

@@ -7,6 +7,7 @@ section .text
 
 _start:
   mov rdi, msg
+  mov rsi, 'h'
   call printf
   
   mov rax, 60

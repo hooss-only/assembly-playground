@@ -1,6 +1,7 @@
 section .text
   global printf
 
+; rsi 레지스터를 사용하므로 내부에서 다른 함수 호출시 rsi 백업이 필요함.
 printf:
   push rbp
   mov rbp, rsp
@@ -12,10 +13,7 @@ printf:
   mov qword [rbp-40], r9
   mov qword [rbp-48], 0 ; 포맷팅 개수 세기
 
-  mov rsi, rdi ; write syscall 준비과정
-  mov rax, 1
-  mov rdi, 1
-  mov rdx, 1
+  mov rsi, rdi ; write syscall 준비과정, rsi는 출력할 문자 포인터
 
 ; 기본적으로는 문자열 포인터를 1씩 더해가며 한 글자씩 출력합니다.
 ; 0을 만나면 문자열의 끝으로 판단하고 함수를 종료(printf_done)시킵니다.
@@ -26,7 +24,11 @@ printf_loop:
 
   cmp byte [rsi], '%'
   je printf_fmt
-  
+
+  mov rax, 1
+  mov rdi, 1
+  mov rdx, 1
+
   syscall
   add rsi, 1
 

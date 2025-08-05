@@ -1,5 +1,6 @@
 section .data
   msg db "%d * %d = %d", 10, 0
+  t db "%d", 10, 0
   nl db 0xa
 
 section .text
@@ -21,6 +22,9 @@ main:
   
   mov dword [rbp-4], 0 ; i = 0
   mov dword [rbp-8], 0 ; j = 0
+
+  mov rdi, t
+  call printf
 
 loop_1:
   cmp dword [rbp-4], 9 ; i < 9 ?

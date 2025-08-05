@@ -91,7 +91,7 @@ printf_fmt_digit:
   lea rsi, [rsp] ; = rsi = &buf
   mov rax, 1
   mov rdi, 1
-  mov rdx, 8
+  mov rdx, 16
   syscall
 
   add rsp, 16

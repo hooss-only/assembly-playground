@@ -1,5 +1,6 @@
 section .text
   global printf
+  extern cvt_digit_to_str
 
 ; rsi 레지스터를 사용하므로 내부에서 다른 함수 호출시 rsi 백업이 필요함.
 printf:
@@ -68,12 +69,35 @@ printf_fmt_switch:
   cmp byte [r8], 'c'
   je printf_fmt_char
 
+  cmp byte [r8], 'd'
+  je printf_fmt_digit
+
   jmp printf_fmt_unknown
 
 ; 구한 char 인자값을 대입하여 출력합니다.
 printf_fmt_char:
   lea rsi, [r11]
   syscall
+  jmp printf_fmt_done
+
+printf_fmt_digit:
+  push rbp
+  mov rbp, rsp
+  sub rsp, 16
+
+  mov rdi, qword [r11] ; rdi = args[cnt]
+  mov qword [rsp+4], 0
+  lea rsi, [rsp] ; = rsi = &buf
+  call cvt_digit_to_str ; cvt_digit_to_str(args[cnt], &buf)
+  lea rsi, [rsp] ; = rsi = &buf
+  mov rax, 1
+  mov rdi, 1
+  mov rdx, 8
+  syscall
+
+  mov rsp, rbp
+  pop rbp
+
   jmp printf_fmt_done
 
 ; 포매팅 개수를 늘리고

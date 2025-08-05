@@ -9,7 +9,7 @@ _start:
   ; 호출 규약에 따른 printf 호출 과정
   mov rdi, msg
   mov rsi, 'h'
-  mov rdx, 'i'
+  mov rdx, 12345678
   call printf
   
   mov rax, 60

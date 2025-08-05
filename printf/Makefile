@@ -1,5 +1,5 @@
 TARGET = a
-OBJS = main.o printf.o
+OBJS = main.o printf.o type_convert.o
 
 all: $(TARGET)
 

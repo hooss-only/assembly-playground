@@ -81,8 +81,6 @@ printf_fmt_char:
   jmp printf_fmt_done
 
 printf_fmt_digit:
-  push rbp
-  mov rbp, rsp
   sub rsp, 16
 
   mov rdi, qword [r11] ; rdi = args[cnt]
@@ -95,8 +93,7 @@ printf_fmt_digit:
   mov rdx, 8
   syscall
 
-  mov rsp, rbp
-  pop rbp
+  add rsp, 16
 
   jmp printf_fmt_done
 

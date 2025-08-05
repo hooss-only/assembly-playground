@@ -9,9 +9,9 @@ cvt_digit_to_str:
     mov rbp, rsp
     sub rsp, 32
 
-    mov dword [rsp+4], 0 ; int length
-    mov dword [rsp+8], 0 ; int cnt
-    mov qword [rsp+16], rdi ; long original
+    mov dword [rbp-4], 0 ; int length
+    mov dword [rbp-8], 0 ; int cnt
+    mov qword [rbp-16], rdi ; long original
 
     mov rax, rdi
 
@@ -26,16 +26,16 @@ cvt_digit_to_str_get_length:
     div rbx 
 
     ; length++
-    add dword [rsp+4], 1
+    add dword [rbp-4], 1
 
     ; loop
     jmp cvt_digit_to_str_get_length
 
 cvt_digit_to_str_preloop:
-    mov eax, dword [rsp+4]
+    mov eax, dword [rbp-4]
     add rsi, rax
     sub rsi, 1
-    mov rax, qword [rsp+16] ; rax = original
+    mov rax, qword [rbp-16] ; rax = original
 
 cvt_digit_to_str_loop:
     cmp rax, 0 ; rax == 0 ? return

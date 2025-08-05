@@ -84,7 +84,8 @@ printf_fmt_digit:
   sub rsp, 16
 
   mov rdi, qword [r11] ; rdi = args[cnt]
-  mov qword [rsp+4], 0
+  mov qword [rsp], 0
+  mov qword [rsp+8], 0
   lea rsi, [rsp] ; = rsi = &buf
   call cvt_digit_to_str ; cvt_digit_to_str(args[cnt], &buf)
   lea rsi, [rsp] ; = rsi = &buf

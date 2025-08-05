@@ -1,5 +1,6 @@
 section .data
-  msg db "%d + %d = %d", 10, 0
+  msg db "%d * %d = %d", 10, 0
+  nl db 0xa
 
 section .text
   global _start
@@ -28,6 +29,9 @@ loop_1:
   add dword [rbp-4], 1 ; i++
   mov dword [rbp-8], 0 ; j = 0
 
+  mov rdi, nl
+  call printf
+
 loop_2:
   cmp dword [rsp+8], 9 ; j < 9 ?
   je loop_1 ; then break
@@ -37,9 +41,13 @@ loop_2:
   mov rdi, msg
   mov esi, dword [rbp-4]
   mov edx, dword [rbp-8]
-  mov ecx, dword [rbp-4]
-  add ecx, dword [rbp-8]
-  call printf ; printf("%d + %d = %d", i, j, i + j)
+
+  mov eax, esi
+  mul edx
+  mov ecx, eax
+  mov edx, dword [rbp-8]
+
+  call printf ; printf("%d * %d = %d", i, j, i * j)
 
   jmp loop_2
 

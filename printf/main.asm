@@ -8,14 +8,13 @@ section .text
   extern printf
 
 _start:
-  ; 호출 규약에 따른 printf 호출 과정
-  call main
+  call main ; main 호출
   
   mov rdi, rax
   mov rax, 60
   syscall
 
-main:
+main: ; int main()
   push rbp
   mov rbp, rsp
   sub rsp, 16
@@ -60,4 +59,4 @@ main_done:
   pop rbp
 
   xor rax, rax 
-  ret
+  ret ; return 0;

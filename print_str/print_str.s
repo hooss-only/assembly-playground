@@ -19,7 +19,7 @@ _print_str:
   b .Lget_len_loop
 
 .Lwrite:
-  mov x0, #0
+  mov x0, #1
   mov x1, x9
   mov x2, x10
 
